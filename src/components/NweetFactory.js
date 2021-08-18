@@ -8,10 +8,10 @@ const NweetFactory = ({userObj}) => {
     const [nweet, setNweet] = useState('');
     const [attachment, setAttachment] = useState("");
     const onSubmit = async (event) => {
+        event.preventDefault();
         if (nweet === "") {
             return;
         }
-        event.preventDefault();
         let attachmentUrl = "";
         if(attachment !== "") {
             const attachmentRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
@@ -29,11 +29,15 @@ const NweetFactory = ({userObj}) => {
         setAttachment("");
     };
     const onChange = (event) => {
-        const {target: {value}} = event;
+        const {
+            target: {value},
+        } = event;
         setNweet(value);
     };
     const onFileChange = (event) => {
-        const {target: {files}} = event;
+        const {
+            target: {files},
+        } = event;
         const theFile = files[0];
         const reader = new FileReader();
         reader.onloadend = (finishEvent) => {
@@ -43,7 +47,9 @@ const NweetFactory = ({userObj}) => {
             console.log(finishEvent);
             setAttachment(result);
         }
-        reader.readAsDataURL(theFile);
+        if(Boolean(theFile)) {
+            reader.readAsDataURL(theFile);
+        }
     };
     const onClearAttachment = () => setAttachment("");
     return (

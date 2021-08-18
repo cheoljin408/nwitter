@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { authService } from '../fbase';
 
 const Profile = ({ refreshUser, userObj }) => {
@@ -18,7 +18,7 @@ const Profile = ({ refreshUser, userObj }) => {
     const onSubmit = async (event) => {
         event.preventDefault();
         if(userObj.displayName !== newDisplayName) {
-            const response = await userObj.updateProfile({
+            await userObj.updateProfile({
                 displayName: newDisplayName,
             });
             refreshUser();
